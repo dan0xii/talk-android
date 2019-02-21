@@ -24,7 +24,7 @@
     android:id="@+id/generic_rv_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nc_white_color">
+    android:background="@color/bg_default">
 
     <ProgressBar
         android:id="@+id/progressBar"

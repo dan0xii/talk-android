@@ -21,8 +21,12 @@
 package com.nextcloud.talk.application;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -76,6 +80,8 @@ import java.util.concurrent.TimeUnit;
 @AutoInjector(NextcloudTalkApplication.class)
 public class NextcloudTalkApplication extends MultiDexApplication implements LifecycleObserver {
     private static final String TAG = NextcloudTalkApplication.class.getSimpleName();
+    private static final String DARK_THEME = "darkTheme";
+
     //region Singleton
     protected static NextcloudTalkApplication sharedApplication;
     //region Fields (components)
@@ -114,6 +120,7 @@ public class NextcloudTalkApplication extends MultiDexApplication implements Lif
     //region Overridden methods
     @Override
     public void onCreate() {
+        setAppTheme(getAppTheme(getApplicationContext()));
         super.onCreate();
 
         sharedApplication = this;
@@ -166,6 +173,21 @@ public class NextcloudTalkApplication extends MultiDexApplication implements Lif
     //region Getters
     public NextcloudTalkApplicationComponent getComponentApplication() {
         return componentApplication;
+    }
+
+    public static boolean getAppTheme(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(DARK_THEME, false);
+    }
+    //endregion
+
+    //region Setters
+    public static void setAppTheme(Boolean darkTheme) {
+        if (darkTheme) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
     //endregion
 

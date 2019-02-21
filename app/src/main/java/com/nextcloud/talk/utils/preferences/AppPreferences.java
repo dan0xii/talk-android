@@ -265,6 +265,18 @@ public interface AppPreferences {
     @UnregisterChangeListenerMethod
     void unregisterScreenLockTimeoutListener(OnPreferenceValueChangedListener<String> listener);
 
+    @KeyByString("theme")
+    @DefaultValue(R.bool.value_false)
+    boolean getTheme();
+
+    @KeyByString("theme")
+    @RegisterChangeListenerMethod
+    void registerThemeChangeListener(OnPreferenceValueChangedListener<Boolean> listener);
+
+    @KeyByString("theme")
+    @UnregisterChangeListenerMethod
+    void unregisterThemeChangeListener(OnPreferenceValueChangedListener<Boolean> listener);
+
 
     @ClearMethod
     void clear();

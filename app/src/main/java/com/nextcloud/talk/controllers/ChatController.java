@@ -39,6 +39,8 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import autodagger.AutoInjector;
@@ -429,7 +431,7 @@ public class ChatController extends BaseController implements MessagesListAdapte
 
     private void setupMentionAutocomplete() {
         float elevation = 6f;
-        Drawable backgroundDrawable = new ColorDrawable(Color.WHITE);
+        Drawable backgroundDrawable = new ColorDrawable(ContextCompat.getColor(getApplicationContext(), R.color.bg_default));
         AutocompletePresenter<Mention> presenter = new MentionAutocompletePresenter(getApplicationContext(), roomToken);
         AutocompleteCallback<Mention> callback = new MentionAutocompleteCallback();
 

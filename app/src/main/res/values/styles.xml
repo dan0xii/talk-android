@@ -1,12 +1,21 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:panelFullBackground">@color/colorPrimary</item>
         <item name="android:itemBackground">@color/colorPrimary</item>
+        <item name="android:background">@color/bg_default</item>
+        <item name="android:windowBackground">@color/bg_default</item>
+        <item name="android:textColor">@color/fg_default</item>
+        <item name="colorControlNormal">@color/fg_default</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <!--<item name="android:switchTextAppearance">@android:style/TextAppearance.Material</item>-->
+        <item name="android:textColorPrimary">@color/fg_default</item>
+        <!--<item name="android:colorBackground">@color/bg_default</item>-->
+        <!--<item name="android:color">@color/bg_default</item>-->
     </style>
 </resources>

@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.SwitchPreference;
 import android.security.KeyChain;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.ViewCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -163,6 +165,9 @@ public class SettingsController extends BaseController {
     @BindView(R.id.settings_screen_lock_timeout)
     MaterialChoicePreference screenLockTimeoutChoicePreference;
 
+    @BindView(R.id.settings_theme)
+    MaterialSwitchPreference themeSwitchPreference;
+
     @BindView(R.id.message_text)
     TextView messageText;
 
@@ -191,6 +196,7 @@ public class SettingsController extends BaseController {
     private OnPreferenceValueChangedListener<Boolean> screenSecurityChangeListener;
     private OnPreferenceValueChangedListener<Boolean> screenLockChangeListener;
     private OnPreferenceValueChangedListener<String> screenLockTimeoutChangeListener;
+    private OnPreferenceValueChangedListener<Boolean> themeChangeListener;
 
     private Disposable profileQueryDisposable;
     private Disposable dbQueryDisposable;
@@ -226,6 +232,7 @@ public class SettingsController extends BaseController {
         appPreferences.registerScreenSecurityListener(screenSecurityChangeListener = new ScreenSecurityChangeListener());
         appPreferences.registerScreenLockListener(screenLockChangeListener = new ScreenLockListener());
         appPreferences.registerScreenLockTimeoutListener(screenLockTimeoutChangeListener = new ScreenLockTimeoutListener());
+        appPreferences.registerThemeChangeListener(themeChangeListener = new ThemeChangeListener());
 
         List<String> listWithIntFields = new ArrayList<>();
         listWithIntFields.add("proxy_port");
@@ -312,6 +319,11 @@ public class SettingsController extends BaseController {
                     SwitchAccountController()).pushChangeHandler(new VerticalChangeHandler())
                     .popChangeHandler(new VerticalChangeHandler()));
         });
+
+        themeSwitchPreference.setSummary(appPreferences.getTheme() ?
+                                        context.getString(R.string.nc_settings_theme_dark) :
+                                        context.getString(R.string.nc_settings_theme_light));
+        themeSwitchPreference.setValue(appPreferences.getTheme());
 
         String host = null;
         int port = -1;
@@ -664,10 +676,10 @@ public class SettingsController extends BaseController {
             appPreferences.unregisterScreenSecurityListener(screenSecurityChangeListener);
             appPreferences.unregisterScreenLockListener(screenLockChangeListener);
             appPreferences.unregisterScreenLockTimeoutListener(screenLockTimeoutChangeListener);
+            appPreferences.unregisterThemeChangeListener(themeChangeListener);
         }
         super.onDestroy();
     }
-
 
     private void hideProxySettings() {
         appPreferences.removeProxyHost();
@@ -807,6 +819,20 @@ public class SettingsController extends BaseController {
 
                 showProxySettings();
             }
+        }
+    }
+
+    private class ThemeChangeListener implements OnPreferenceValueChangedListener<Boolean> {
+        @Override
+        public void onChanged(Boolean newValue) {
+            if (newValue) {
+                themeSwitchPreference.setSummary(getActivity().getString(R.string.nc_settings_theme_dark));
+            } else {
+                themeSwitchPreference.setSummary(getActivity().getString(R.string.nc_settings_theme_light));
+            }
+            themeSwitchPreference.setValue(newValue);
+            NextcloudTalkApplication.setAppTheme(newValue);
+            getActivity().recreate();
         }
     }
 }

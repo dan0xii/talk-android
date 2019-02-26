@@ -53,6 +53,7 @@ import com.nextcloud.talk.utils.DisplayUtils;
 import com.nextcloud.talk.utils.OkHttpNetworkFetcherWithCache;
 import com.nextcloud.talk.utils.database.arbitrarystorage.ArbitraryStorageModule;
 import com.nextcloud.talk.utils.database.user.UserModule;
+import com.nextcloud.talk.utils.preferences.AppPreferences;
 import com.nextcloud.talk.webrtc.MagicWebRTCUtils;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.twitter.TwitterEmojiProvider;
@@ -80,7 +81,6 @@ import java.util.concurrent.TimeUnit;
 @AutoInjector(NextcloudTalkApplication.class)
 public class NextcloudTalkApplication extends MultiDexApplication implements LifecycleObserver {
     private static final String TAG = NextcloudTalkApplication.class.getSimpleName();
-    private static final String DARK_THEME = "darkTheme";
 
     //region Singleton
     protected static NextcloudTalkApplication sharedApplication;
@@ -88,6 +88,9 @@ public class NextcloudTalkApplication extends MultiDexApplication implements Lif
     protected NextcloudTalkApplicationComponent componentApplication;
     @Inject
     OkHttpClient okHttpClient;
+
+    @Inject
+    AppPreferences prefs;
     //endregion
 
     public static NextcloudTalkApplication getSharedApplication() {
@@ -120,7 +123,7 @@ public class NextcloudTalkApplication extends MultiDexApplication implements Lif
     //region Overridden methods
     @Override
     public void onCreate() {
-        setAppTheme(getAppTheme(getApplicationContext()));
+        setAppTheme(prefs.getTheme());
         super.onCreate();
 
         sharedApplication = this;
@@ -175,14 +178,15 @@ public class NextcloudTalkApplication extends MultiDexApplication implements Lif
         return componentApplication;
     }
 
-    public static boolean getAppTheme(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(DARK_THEME, false);
+    public boolean getAppTheme(Context context) {
+        return prefs.getTheme();
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//        return prefs.getBoolean(DARK_THEME, false);
     }
     //endregion
 
     //region Setters
-    public static void setAppTheme(Boolean darkTheme) {
+    public void setAppTheme(Boolean darkTheme) {
         if (darkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {

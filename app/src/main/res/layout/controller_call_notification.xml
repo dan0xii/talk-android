@@ -56,7 +56,7 @@
             android:layout_marginBottom="16dp"
             android:ellipsize="marquee"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/fg_inverse"
             android:textSize="28sp"
             tools:text="Victor Gregorius Magnus" />
 
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45"
-        tools:src="@color/white" />
+        tools:src="@color/fg_inverse" />
 
     <LinearLayout
         android:layout_width="wrap_content"

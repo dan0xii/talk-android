@@ -603,7 +603,7 @@ public class CallController extends BaseController {
                         .headingTvColor(getResources().getColor(R.color.colorPrimary))
                         .headingTvSize(20)
                         .headingTvText(getResources().getString(R.string.nc_push_to_talk))
-                        .subHeadingTvColor(getResources().getColor(R.color.white))
+                        .subHeadingTvColor(getResources().getColor(R.color.fg_inverse))
                         .subHeadingTvSize(16)
                         .subHeadingTvText(getResources().getString(R.string.nc_push_to_talk_desc))
                         .maskColor(Color.parseColor("#dc000000"))

@@ -43,6 +43,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import autodagger.AutoInjector;
@@ -321,9 +323,7 @@ public class SettingsController extends BaseController {
         });
 
         themeSwitchPreference.setSummary(appPreferences.getTheme() ?
-                                        context.getString(R.string.nc_settings_theme_dark) :
-                                        context.getString(R.string.nc_settings_theme_light));
-        themeSwitchPreference.setValue(appPreferences.getTheme());
+                                        context.getString(R.string.nc_settings_theme_dark) : context.getString(R.string.nc_settings_theme_light));
 
         String host = null;
         int port = -1;
@@ -358,6 +358,7 @@ public class SettingsController extends BaseController {
                     null, alias, null);
         }, new String[]{"RSA", "EC"}, null, finalHost, finalPort, currentUser.getClientCertificate
                 ()));
+        ((Checkable) themeSwitchPreference.findViewById(R.id.mp_checkable)).setChecked(appPreferences.getTheme());
     }
 
     private void showLovelyDialog(int dialogId, Bundle savedInstanceState) {
@@ -825,13 +826,7 @@ public class SettingsController extends BaseController {
     private class ThemeChangeListener implements OnPreferenceValueChangedListener<Boolean> {
         @Override
         public void onChanged(Boolean newValue) {
-            if (newValue) {
-                themeSwitchPreference.setSummary(getActivity().getString(R.string.nc_settings_theme_dark));
-            } else {
-                themeSwitchPreference.setSummary(getActivity().getString(R.string.nc_settings_theme_light));
-            }
             themeSwitchPreference.setValue(newValue);
-            NextcloudTalkApplication.setAppTheme(newValue);
             getActivity().recreate();
         }
     }

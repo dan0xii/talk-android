@@ -827,6 +827,7 @@ public class SettingsController extends BaseController {
         @Override
         public void onChanged(Boolean newValue) {
             themeSwitchPreference.setValue(newValue);
+            NextcloudTalkApplication.setAppTheme(newValue);
             getActivity().recreate();
         }
     }

@@ -17,5 +17,10 @@
         <item name="android:textColorPrimary">@color/fg_default</item>
         <!--<item name="android:colorBackground">@color/bg_default</item>-->
         <!--<item name="android:color">@color/bg_default</item>-->
+        <item name="textAppearanceListItem">@style/listItemStyle</item>
+    </style>
+
+    <style name="listItemStyle">
+        <item name="android:textColor">@color/fg_default</item>
     </style>
 </resources>

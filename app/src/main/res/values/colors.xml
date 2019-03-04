@@ -27,5 +27,7 @@
     <color name="fg_inverse">#FFFFFF</color>
     <color name="fg_error">#d32f2f</color>
     <color name="textSecondary">#000000</color>
+
+    <color name="colorForeground">@color/nc_darkGreen</color>
 </resources>
 

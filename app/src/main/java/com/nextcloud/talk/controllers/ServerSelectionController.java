@@ -127,6 +127,7 @@ public class ServerSelectionController extends BaseController {
         textFieldBoxes.getEndIconImageButton().setEnabled(false);
         textFieldBoxes.getEndIconImageButton().setVisibility(View.VISIBLE);
         textFieldBoxes.getEndIconImageButton().setOnClickListener(view1 -> checkServerAndProceed());
+        textFieldBoxes.setPanelBackgroundColor(R.color.nc_darkGreen);
 
         if (TextUtils.isEmpty(getResources().getString(R.string.nc_providers_url)) && (TextUtils.isEmpty(getResources
                 ().getString(R.string.nc_import_account_type)))) {

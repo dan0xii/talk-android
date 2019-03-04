@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="conversation_item_header">#6c94a8</color>
+
+    <color name="fg_default">#eeeeee</color>
+
+    <color name="bg_default">#000000</color>
+    <color name="bg_alt">#333333</color>
+    <color name="bg_bubble">@color/black</color>
+
+    <color name="bg_controller_conv_rv">#B3000000</color>
+    <color name="controller_chat_default_bubble_color">#121212</color>
+
+    <!-- Chat window incoming message text & informational -->
+    <color name="nc_incoming_text_default">#8FADBD</color>
+    <color name="bg_message_list_incoming_bubble">#8C8C8C</color>
+    <color name="bg_system_message">@color/bg_message_list_incoming_bubble</color>
+    <color name="nc_grey">@android:color/holo_purple</color>
+    <color name="bg_bottom_sheet">#222222</color>
+
+    <color name="emoji_background">#313031</color>
+    <color name="emoji_divider">#15FFFFFF</color>
+</resources>

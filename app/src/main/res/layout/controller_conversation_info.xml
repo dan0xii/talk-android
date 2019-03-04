@@ -23,7 +23,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nc_white_color"
+    android:background="@color/bg_controller_conv_info"
     android:orientation="vertical">
 
     <ProgressBar

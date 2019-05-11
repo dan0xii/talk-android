@@ -71,7 +71,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/avatar_image"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/margin_between_elements" />
+                        android:layout_marginTop="@dimen/margin_between_elements"
+                        android:textColor="@color/fg_default" />
 
                 </RelativeLayout>
             </com.yarolegovich.mp.MaterialPreferenceCategory>

@@ -29,6 +29,7 @@
         <item name="android:panelFullBackground">@color/colorPrimary</item>
         <item name="android:itemBackground">@color/nc_outcoming_text_default</item>
         <item name="android:textColor">@color/nc_text_color</item>
+        <item name="textAppearanceListItem">@style/textApp</item>
     </style>
 
     <style name="ErrorAppearance" parent="@android:style/TextAppearance">
@@ -46,6 +47,10 @@
 
     <style name="ChipMentionTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="textApp" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/fg_default</item>
     </style>
 
 </resources>

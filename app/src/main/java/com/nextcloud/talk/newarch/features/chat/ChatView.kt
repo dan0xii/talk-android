@@ -210,6 +210,10 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
             }.setOnEmojiClickListener { emoji, imageView -> it.editableText?.append(" ") }.build(it)
         }
 
+//        if (activity?.intent?.action == Intent.ACTION_SEND) {
+            view.messageInput.setText("test2")
+//        }
+
         view.smileyButton.setOnClickListener {
             emojiPopup?.toggle()
         }

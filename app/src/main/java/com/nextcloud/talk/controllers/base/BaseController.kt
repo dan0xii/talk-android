@@ -36,6 +36,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import at.bitfire.dav4jvm.Constants.log
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.bluelinelabs.conductor.autodispose.ControllerScopeProvider
@@ -144,6 +145,7 @@ abstract class BaseController : ButterKnifeController(), ComponentCallbacks {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("tag", "dbtest ")
         return when (item.itemId) {
             android.R.id.home -> {
                 router.popCurrentController()

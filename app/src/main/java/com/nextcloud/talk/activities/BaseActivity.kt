@@ -22,11 +22,16 @@ package com.nextcloud.talk.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.WindowManager
 import android.webkit.SslErrorHandler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.nextcloud.talk.R
 import com.nextcloud.talk.events.CertificateEvent
 import com.nextcloud.talk.utils.SecurityUtils
@@ -41,11 +46,40 @@ import java.security.cert.CertificateParsingException
 import java.security.cert.X509Certificate
 import java.text.DateFormat
 
+
 open class BaseActivity : AppCompatActivity() {
 
     val eventBus: EventBus by inject()
     val appPreferences: AppPreferences by inject()
     val context: Context by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//
+//        val receiverdIntent = intent
+//        val receivedAction = receiverdIntent.action
+//        val receivedType = receiverdIntent.type
+//
+//        if (receivedAction == Intent.ACTION_SEND) { // check mime type
+//            if (receivedType!!.startsWith("text/")) {
+//                val receivedText = receiverdIntent
+//                        .getStringExtra(Intent.EXTRA_TEXT)
+//                Log.d("TAG", "dbtest text shared: " + receivedText)
+//                if (receivedText != null) {
+//                    Log.d("TAG", "dbtest text shared: " + receivedText)
+//                }
+//            } else if (receivedType.startsWith("image/")) {
+//                val receiveUri: Uri = receiverdIntent
+//                        .getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+//                if (receiveUri != null) { //do your stuff
+////                    fileUri = receiveUri // save to your own Uri object
+//                    Log.e("TAG", receiveUri.toString())
+//                }
+//            }
+//        } else if (receivedAction == Intent.ACTION_MAIN) {
+//            Log.e("TAG", "onSharedIntent: nothing shared")
+//        }
+    }
 
     public override fun onResume() {
         super.onResume()

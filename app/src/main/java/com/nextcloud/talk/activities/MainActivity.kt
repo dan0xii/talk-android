@@ -23,8 +23,11 @@ package com.nextcloud.talk.activities
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import butterknife.BindView
@@ -139,6 +142,7 @@ class MainActivity : BaseActivity(), ActionBarProvider {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
+        Log.d("test", "onNewIntent()")
         if (intent.action == BundleKeys.KEY_NEW_CONVERSATION) {
             openNewConversationScreen()
         } else if (intent.action == BundleKeys.KEY_OPEN_CONVERSATION) {
@@ -162,8 +166,28 @@ class MainActivity : BaseActivity(), ActionBarProvider {
                             .pushChangeHandler(HorizontalChangeHandler())
                             .popChangeHandler(HorizontalChangeHandler())
             )
+        } else if (intent.action == Intent.ACTION_SEND) {
+            val receiverdIntent = intent
+            val receivedType = receiverdIntent.type
+
+            Log.d("dbtest", "ACTION_SEND")
+            if (receivedType!!.startsWith("text/")) {
+                val receivedText = receiverdIntent.getStringExtra(Intent.EXTRA_TEXT)
+
+                Log.d("TAG", "dbtest text shared: " + receivedText)
+                if (receivedText != null) {
+                    Log.d("TAG", "dbtest text shared: " + receivedText)
+
+
+                }
+            } else if (receivedType.startsWith("image/")) {
+                val receiveUri: Uri = receiverdIntent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+//                   fileUri = receiveUri // save to your own Uri object
+                Log.e("TAG", receiveUri.toString())
+            }
         }
     }
+
 
     override fun onBackPressed() {
         if (router!!.getControllerWithTag(LockedController.TAG) != null) {

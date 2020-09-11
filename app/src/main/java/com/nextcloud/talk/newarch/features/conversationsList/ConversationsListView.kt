@@ -23,6 +23,7 @@
 package com.nextcloud.talk.newarch.features.conversationsList
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -158,6 +159,7 @@ class ConversationsListView : BaseView() {
         val conversation = element.data
         val user = viewModel.globalService.currentUserLiveData.value
         // TODO db
+        Log.d("test", "dbtest " + activity?.intent?.action)
 
         Log.d("test", "dbtest on elementclick")
         user?.let { user ->
@@ -168,7 +170,11 @@ class ConversationsListView : BaseView() {
                     putString(BundleKeys.KEY_CONVERSATION_TOKEN, conversation.token)
                     putString(BundleKeys.KEY_ROOM_ID, conversation.conversationId)
                     putParcelable(BundleKeys.KEY_ACTIVE_CONVERSATION, Parcels.wrap(conversation))
+                    if (activity?.intent?.action == Intent.ACTION_SEND) {
+                        Log.d("test", "dbtest action send !")
+//                        putString(BundleKeys.KEY_SHARE_STRING, activity.intent.)
 
+                    }
                 }
 
                 ConductorRemapping.remapChatController(

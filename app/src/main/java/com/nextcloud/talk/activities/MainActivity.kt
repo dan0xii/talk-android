@@ -146,6 +146,7 @@ class MainActivity : BaseActivity(), ActionBarProvider {
         if (intent.action == BundleKeys.KEY_NEW_CONVERSATION) {
             openNewConversationScreen()
         } else if (intent.action == BundleKeys.KEY_OPEN_CONVERSATION) {
+            Log.d("TAG", "dbtest open conversation")
             GlobalScope.launch {
                 val user: UserNgEntity? = usersRepository.getUserWithId(intent.getLongExtra(BundleKeys.KEY_INTERNAL_USER_ID, -1))
                 user?.let {
@@ -167,24 +168,14 @@ class MainActivity : BaseActivity(), ActionBarProvider {
                             .popChangeHandler(HorizontalChangeHandler())
             )
         } else if (intent.action == Intent.ACTION_SEND) {
-            val receiverdIntent = intent
-            val receivedType = receiverdIntent.type
+            this.intent = intent
 
+            // TODO drop cursor at end of draft text with keyboard open(?)
+            router?.pushController(RouterTransaction.with(ConversationsListView())
+                    // TODO db fix this
+                    .pushChangeHandler(HorizontalChangeHandler())
+                    .popChangeHandler(HorizontalChangeHandler()))
             Log.d("dbtest", "ACTION_SEND")
-            if (receivedType!!.startsWith("text/")) {
-                val receivedText = receiverdIntent.getStringExtra(Intent.EXTRA_TEXT)
-
-                Log.d("TAG", "dbtest text shared: " + receivedText)
-                if (receivedText != null) {
-                    Log.d("TAG", "dbtest text shared: " + receivedText)
-
-
-                }
-            } else if (receivedType.startsWith("image/")) {
-                val receiveUri: Uri = receiverdIntent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
-//                   fileUri = receiveUri // save to your own Uri object
-                Log.e("TAG", receiveUri.toString())
-            }
         }
     }
 

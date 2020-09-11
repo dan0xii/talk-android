@@ -31,6 +31,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -85,6 +86,7 @@ import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_CONVERSATION_PASSWORD
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_CONVERSATION_TOKEN
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_FILE_ID
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_ROOM_ID
+import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_SHARE_STRING
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_USER_ENTITY
 import com.nextcloud.talk.utils.text.Spans
 import com.otaliastudios.autocomplete.Autocomplete
@@ -130,6 +132,7 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
 
     private lateinit var user: User
     private lateinit var conversationToken: String
+    private lateinit var draftMessage: String
     private var conversationPassword: String? = null
 
     override fun onCreateView(
@@ -210,9 +213,32 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
             }.setOnEmojiClickListener { emoji, imageView -> it.editableText?.append(" ") }.build(it)
         }
 
-//        if (activity?.intent?.action == Intent.ACTION_SEND) {
-            view.messageInput.setText("test2")
+        if (activity?.intent?.action == Intent.ACTION_SEND) {
+            Log.d("TAG", "dbtest chatview send")
+
+            val receiverdIntent = activity?.intent
+            val receivedType = receiverdIntent?.type
+
+            Log.d("dbtest", "ACTION_SEND")
+            if (receivedType!!.startsWith("text/")) {
+                val receivedText = receiverdIntent?.getStringExtra(Intent.EXTRA_TEXT)
+
+                Log.d("TAG", "dbtest text shared: " + receivedText)
+                if (receivedText != null) {
+                    Log.d("TAG", "dbtest text shared: " + receivedText)
+                    view.messageInput.setText(receivedText)
+
+
+                }
+            } else if (receivedType.startsWith("image/")) {
+                val receiveUri: Uri = receiverdIntent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+//                   fileUri = receiveUri // save to your own Uri object
+                Log.e("TAG", receiveUri.toString())
+            }
+//        if (!draftMessage.equals(null)) {
+//            view.messageInput.setText(draftMessage)
 //        }
+        }
 
         view.smileyButton.setOnClickListener {
             emojiPopup?.toggle()
@@ -473,6 +499,7 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
         user = bundle.getParcelable(BundleKeys.KEY_USER)!!
         conversationToken = bundle.getString(BundleKeys.KEY_CONVERSATION_TOKEN)!!
         conversationPassword = bundle.getString(KEY_CONVERSATION_PASSWORD)
+//        draftMessage = bundle.getString(KEY_SHARE_STRING)!!
         viewModel.user = user
         viewModel.conversationPassword = conversationPassword
         setupViews()

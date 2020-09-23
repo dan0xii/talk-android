@@ -160,6 +160,7 @@ class ConversationsListView : BaseView() {
         val user = viewModel.globalService.currentUserLiveData.value
         // TODO db
         Log.d("test", "dbtest " + activity?.intent?.action)
+        Log.d("conversation list view", "dbtest are you sure?")
 
         Log.d("test", "dbtest on elementclick")
         user?.let { user ->

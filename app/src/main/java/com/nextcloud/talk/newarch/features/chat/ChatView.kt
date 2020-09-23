@@ -40,7 +40,6 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupMenu
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -70,8 +69,8 @@ import com.nextcloud.talk.newarch.local.models.getMaxMessageLength
 import com.nextcloud.talk.newarch.local.models.toUserEntity
 import com.nextcloud.talk.newarch.mvvm.BaseView
 import com.nextcloud.talk.newarch.mvvm.ext.initRecyclerView
-import com.nextcloud.talk.newarch.utils.NetworkComponents
 import com.nextcloud.talk.newarch.utils.swipe.ChatMessageSwipeCallback
+import com.nextcloud.talk.newarch.utils.NetworkComponents
 import com.nextcloud.talk.newarch.utils.swipe.ChatMessageSwipeInterface
 import com.nextcloud.talk.presenters.MentionAutocompletePresenter
 import com.nextcloud.talk.utils.AccountUtils.canWeOpenFilesApp
@@ -86,7 +85,6 @@ import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_CONVERSATION_PASSWORD
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_CONVERSATION_TOKEN
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_FILE_ID
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_ROOM_ID
-import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_SHARE_STRING
 import com.nextcloud.talk.utils.bundle.BundleKeys.KEY_USER_ENTITY
 import com.nextcloud.talk.utils.text.Spans
 import com.otaliastudios.autocomplete.Autocomplete
@@ -214,31 +212,23 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
         }
 
         if (activity?.intent?.action == Intent.ACTION_SEND) {
-            Log.d("TAG", "dbtest chatview send")
+            when (activity?.intent?.type) {
+                "text/" -> {
+                    val shareText = activity?.intent?.getStringExtra(Intent.EXTRA_TEXT)
 
-            val receiverdIntent = activity?.intent
-            val receivedType = receiverdIntent?.type
-
-            Log.d("dbtest", "ACTION_SEND")
-            if (receivedType!!.startsWith("text/")) {
-                val receivedText = receiverdIntent?.getStringExtra(Intent.EXTRA_TEXT)
-
-                Log.d("TAG", "dbtest text shared: " + receivedText)
-                if (receivedText != null) {
-                    Log.d("TAG", "dbtest text shared: " + receivedText)
-                    view.messageInput.setText(receivedText)
-
-
+                    if (shareText != null) {
+                        view.messageInput.setText(shareText)
+                        activity?.intent?.removeExtra(Intent.EXTRA_TEXT)
+                    }
                 }
-            } else if (receivedType.startsWith("image/")) {
-                val receiveUri: Uri = receiverdIntent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+                "image/" -> {
+                    val receiveUri: Uri = activity?.intent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
 //                   fileUri = receiveUri // save to your own Uri object
-                Log.e("TAG", receiveUri.toString())
+                    Log.d("TAG", "dbtest " + receiveUri.toString())
+                }
             }
-//        if (!draftMessage.equals(null)) {
-//            view.messageInput.setText(draftMessage)
-//        }
         }
+
 
         view.smileyButton.setOnClickListener {
             emojiPopup?.toggle()

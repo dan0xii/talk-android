@@ -56,6 +56,7 @@ import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.emoji.text.EmojiCompat
+import at.bitfire.dav4jvm.Constants.log
 import coil.Coil
 import coil.api.load
 import coil.bitmappool.BitmapPool
@@ -386,7 +387,7 @@ object DisplayUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 var decor = window.decorView
-                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+                if (!isDarkThemeEnabled(NextcloudTalkApplication.sharedApplication!!.resources)) {
                     var systemUiFlags = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

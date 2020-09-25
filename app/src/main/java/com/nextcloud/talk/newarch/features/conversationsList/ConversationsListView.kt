@@ -25,13 +25,18 @@ package com.nextcloud.talk.newarch.features.conversationsList
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -45,6 +50,7 @@ import com.nextcloud.talk.R
 import com.nextcloud.talk.R.drawable
 import com.nextcloud.talk.controllers.bottomsheet.items.BasicListItemWithImage
 import com.nextcloud.talk.controllers.bottomsheet.items.listItemsWithImage
+import com.nextcloud.talk.jobs.ShareOperationWorker
 import com.nextcloud.talk.models.json.conversations.Conversation
 import com.nextcloud.talk.newarch.data.presenters.AdvancedEmptyPresenter
 import com.nextcloud.talk.newarch.features.contactsflow.contacts.ContactsView
@@ -67,6 +73,7 @@ import kotlinx.android.synthetic.main.message_state.view.*
 import kotlinx.android.synthetic.main.search_layout.*
 import org.koin.android.ext.android.inject
 import org.parceler.Parcels
+import java.util.ArrayList
 
 class ConversationsListView : BaseView() {
 
@@ -161,11 +168,36 @@ class ConversationsListView : BaseView() {
         // TODO db
         Log.d("test", "dbtest " + activity?.intent?.action)
         Log.d("conversation list view", "dbtest are you sure?")
+        if (activity?.intent?.action == Intent.ACTION_SEND) {
+            Log.d("Tag", "dbtest " + activity?.intent?.type)
+            if (activity?.intent?.type.equals("image/*")) {
+                Log.d("TAG", "dbtest confirm image to be sent")
+            }
+        }
+
+        val receiveUri: Uri = activity?.intent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
 
         Log.d("test", "dbtest on elementclick")
         user?.let { user ->
             conversation?.let { conversation ->
                 val bundle = Bundle()
+
+                synchronized(receiveUri) {
+                    var paths: MutableList<String> = ArrayList()
+                    var data: Data
+                    var shareWorker: OneTimeWorkRequest
+
+                    data = Data.Builder()
+                            .putLong(BundleKeys.KEY_INTERNAL_USER_ID, user?.id!!)
+                            .putString(BundleKeys.KEY_CONVERSATION_TOKEN, conversation.token)
+                            .putStringArray(BundleKeys.KEY_FILE_PATHS, receiveUri.toString())
+                            .build()
+                    shareWorker = OneTimeWorkRequest.Builder(ShareOperationWorker::class.java)
+                            .setInputData(data)
+                            .build()
+                    WorkManager.getInstance().enqueue(shareWorker)
+                }
+
                 with(bundle) {
                     putParcelable(BundleKeys.KEY_USER, user.toUser())
                     putString(BundleKeys.KEY_CONVERSATION_TOKEN, conversation.token)

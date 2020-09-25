@@ -99,6 +99,7 @@ import kotlinx.android.synthetic.main.controller_chat.view.*
 import kotlinx.android.synthetic.main.item_message_quote.view.*
 import kotlinx.android.synthetic.main.lobby_view.view.*
 import kotlinx.android.synthetic.main.view_message_input.view.*
+import org.apache.commons.lang3.StringUtils.startsWith
 import org.koin.android.ext.android.inject
 import org.parceler.Parcels
 import java.util.*
@@ -132,6 +133,7 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
     private lateinit var conversationToken: String
     private lateinit var draftMessage: String
     private var conversationPassword: String? = null
+    private val TAG = "ChatView"
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -212,18 +214,35 @@ class ChatView(private val bundle: Bundle) : BaseView(), ImageLoaderInterface {
         }
 
         if (activity?.intent?.action == Intent.ACTION_SEND) {
-            when (activity?.intent?.type) {
-                "text/" -> {
+//            when ((activity?.intent?.type).startsWith) {
+//                "text/plain" -> {
+//                    val shareText = activity?.intent?.getStringExtra(Intent.EXTRA_TEXT)
+//
+//                    if (shareText != null) {
+//                        view.messageInput.setText(shareText)
+//                        activity?.intent?.removeExtra(Intent.EXTRA_TEXT)
+//                    }
+//                }
+//                "image/*" -> {
+//                    val receiveUri: Uri = activity?.intent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+////                   fileUri = receiveUri // save to your own Uri object
+//                    Log.d("TAG", "dbtest " + receiveUri.toString())
+//                }
+//            }
+            when {
+                (activity?.intent?.type)!!.startsWith("text/plain") -> {
                     val shareText = activity?.intent?.getStringExtra(Intent.EXTRA_TEXT)
 
                     if (shareText != null) {
                         view.messageInput.setText(shareText)
                         activity?.intent?.removeExtra(Intent.EXTRA_TEXT)
+                    } else {
+                        Log.e(TAG, "Shared text is null")
                     }
                 }
-                "image/" -> {
+                (activity?.intent?.type)!!.startsWith("image/") -> {
                     val receiveUri: Uri = activity?.intent?.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
-//                   fileUri = receiveUri // save to your own Uri object
+//                      fileUri = receiveUri // save to your own Uri object
                     Log.d("TAG", "dbtest " + receiveUri.toString())
                 }
             }
